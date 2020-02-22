@@ -1,3 +1,11 @@
+/*
+ * -Smart Mood Light-
+ *
+ * author jihoonkimtech (jihoonkimtech@naver.com)
+ *      (Republic of Korea)
+ * version  V1.0.0
+ * date  2020-02-22
+*/
 
 // LCD 라이브러리
 #include <Wire.h>
@@ -10,9 +18,6 @@
 SoftwareSerial myBluetooth(bt_tx,bt_rx);
 /////////////////////////////////////////////////////////
  
-// 제로윈코딩 2017.09.17
-// 3색 LED 예제
-// 클래스 포인터, 클래그 객체의 차이점
  
 #define COLOR_R_PIN 9
 #define COLOR_G_PIN 10
@@ -198,4 +203,3 @@ void loop() {
   
   
 }
-
