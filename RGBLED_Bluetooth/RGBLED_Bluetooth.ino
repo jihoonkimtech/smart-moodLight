@@ -3,69 +3,75 @@
  *
  * author jihoonkimtech (jihoonkimtech@naver.com)
  *      (Republic of Korea)
- * version  V1.0.0
+ * version  V1.1.0
  * date  2020-02-22
 */
 
-// LCD 라이브러리
+// for I2C LCD 16X2 using
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x3F, 16, 2);
  
-// 블루투스 라이브러리
+// for bluetooth function
 #include <SoftwareSerial.h>
 #define bt_tx 6
 #define bt_rx 7
 SoftwareSerial myBluetooth(bt_tx,bt_rx);
-/////////////////////////////////////////////////////////
  
- 
+//RGB LED pins
 #define COLOR_R_PIN 9
 #define COLOR_G_PIN 10
 #define COLOR_B_PIN 11
- 
-LiquidCrystal_I2C lcd(0x3F, 16, 2);
-// 텍스트 버퍼
+
+
+// text buffer
 char line[33];
- 
-class RGB
+
+//RGB LED CLASS
+class RGB_LED
 {
   public:
   
-  RGB(int r, int g, int b);
-  ~RGB();
- 
+  RGB_LED(int r, int g, int b);
+  ~RGB_LED();
+
+  //color writing method
   void draw();
+  
+  //set color method
   void setDraw(int r, int g, int b);
- 
-  int red;
-  int green;
-  int blue;
- 
+
+  //color variable (in class)
+  int _red;
+  int _green;
+  int _blue;
+
+  //lcd using method
   void lcdPrint();
 };
  
-RGB::RGB(int r, int g, int b)
+RGB_LED::RGB_LED(int r, int g, int b)
 {
-  red = r;
-  green = g;
-  blue = b;
+  _red = r;
+  _green = g;
+  _blue = b;
 }
  
-RGB::~RGB()
+RGB_LED::~RGB_LED()
 {
   
 }
  
-void RGB::draw()
+void RGB_LED::draw()
 {
-  analogWrite(COLOR_R_PIN, 255-red); 
-  analogWrite(COLOR_G_PIN, 255-green);
-  analogWrite(COLOR_B_PIN, 255-blue);  
+  analogWrite(COLOR_R_PIN, 255-_red); 
+  analogWrite(COLOR_G_PIN, 255-_green);
+  analogWrite(COLOR_B_PIN, 255-_blue);  
  
   lcdPrint();
 }
  
-void RGB::setDraw(int r, int g, int b)
+void RGB_LED::setDraw(int r, int g, int b)
 {
     red = r;
   green = g;
@@ -74,7 +80,7 @@ void RGB::setDraw(int r, int g, int b)
   draw();
 }
  
-void RGB::lcdPrint()
+void RGB_LED::lcdPrint()
 {
   memset(line, 0x00, 33);
   sprintf(line, "R%d G%d B%d", red, green, blue);
@@ -83,23 +89,23 @@ void RGB::lcdPrint()
   lcd.print(line);  
 }
  
-/////////////////////////////////////////////////////////////
-// 객체 선언
- 
+// create Object 
 RGB * rgb = new RGB(200, 0, 0);
 RGB rgb2(0, 0, 200);
  
 void setup() {
- 
+
+  // communication start
   Serial.begin(9600);
   myBluetooth.begin(9600);
-  
   lcd.begin();  
   
 }
- 
+
+// readString
 String readString;
- 
+
+// Collect rgb datas in string
 String getValue(String data, char separator, int index)
 {
     int found = 0;
@@ -145,60 +151,42 @@ void loop() {
 #endif
  
  
-  //expect a string like wer,qwe rty,123 456,hyre kjhg,
-  //or like hello world,who are you?,bye!,
+  // bluetooth waiting..
   while (myBluetooth.available()) {
     
-    delay(10);  //small delay to allow input buffer to fill
-    char c = myBluetooth.read();  //gets one byte from serial buffer
-    if (c == '\n') {
-      break;
+    delay(10);  //small delay (for fill serial buffer from bluetooth data)
+    char c = myBluetooth.read();  //get char from serial buffer
+    if (c == '\n') { //end of string
+      break; //break out
     }  //breaks out of capture loop to print readstring
-    readString += c; 
-  } //makes the string readString  
+    readString += c; //save char in readString variable 
+  } 
+  //complete make readString
  
-  if (readString.length() > 0) {
-    
+  if (readString.length() > 0) { //fill readString?
+
+    //for a test
     Serial.println("" + readString + " " + readString.length()); //prints string to serial port out
- 
+
+    //save string data
     String sRed = getValue(readString, ',', 0);
     String sGreen = getValue(readString, ',', 1);
     String sBlue = getValue(readString, ',', 2);
+    //for a test
     Serial.println(sRed);
     Serial.println(sGreen);
     Serial.println(sBlue);
- 
+
+    //save color data in variable
     int r = sRed.toInt();
     int g = sGreen.toInt();
     int b = sBlue.toInt();
-    
  
-    /*
-    String inString = "";    // string to hold input
-    inString = "";    // string to hold input
-    inString += (char)readString.charAt(1);
-    inString += (char)readString.charAt(2);
-    inString += (char)readString.charAt(3);
-    int r = inString.toInt();
-    Serial.println(r, DEC);
-    inString = "";    // string to hold input
-    inString += (char)readString.charAt(5);
-    inString += (char)readString.charAt(6);
-    inString += (char)readString.charAt(7);
-    int g = inString.toInt();
-    Serial.println(g, DEC);
-    inString = "";    // string to hold input
-    inString += (char)readString.charAt(9);
-    inString += (char)readString.charAt(10);
-    inString += (char)readString.charAt(11);
-    int b = inString.toInt();
-    Serial.println(b, DEC);
-    */
- 
- 
+    //writing RGB LED
    rgb->setDraw(r, g, b);
-    
-    readString=""; //clears variable for new input
+
+    //clears variable
+    readString=""; 
   }
   
   
