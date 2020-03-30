@@ -7,11 +7,7 @@
  * date  2020-02-22
 */
 
-// for I2C LCD 16X2 using
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x3F, 16, 2);
- 
 // for bluetooth function
 #include <SoftwareSerial.h>
 #define bt_tx 6
@@ -73,7 +69,7 @@ void RGB_LED::draw()
  
 void RGB_LED::setDraw(int r, int g, int b)
 {
-    red = r;
+  red = r;
   green = g;
   blue = b;
  
@@ -84,9 +80,6 @@ void RGB_LED::lcdPrint()
 {
   memset(line, 0x00, 33);
   sprintf(line, "R%d G%d B%d", red, green, blue);
-  lcd.clear();
-  lcd.setCursor(0, 1);
-  lcd.print(line);  
 }
  
 // create Object 
@@ -97,8 +90,7 @@ void setup() {
 
   // communication start
   Serial.begin(9600);
-  myBluetooth.begin(9600);
-  lcd.begin();  
+  myBluetooth.begin(9600); 
   
 }
 
