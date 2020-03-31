@@ -10,9 +10,9 @@
 #include <Wire.h>
 // for bluetooth function
 #include <SoftwareSerial.h>
-#define bt_tx 6
-#define bt_rx 7
-SoftwareSerial myBluetooth(bt_tx,bt_rx);
+#define BT_TX 6
+#define BT_RX 7
+SoftwareSerial myBluetooth(BT_TX, BT_RX);
  
 //RGB LED pins
 #define COLOR_R_PIN 9
@@ -28,29 +28,27 @@ class RGB_LED
 {
   public:
   
-  RGB_LED(int r, int g, int b);
+  RGB_LED(int red, int green, int blue);
   ~RGB_LED();
 
   //color writing method
-  void draw();
+  void drawColor();
   
   //set color method
-  void setDraw(int r, int g, int b);
+  void setColor(int red, int green, int blue);
 
   //color variable (in class)
   int _red;
   int _green;
   int _blue;
 
-  //lcd using method
-  void lcdPrint();
 };
  
-RGB_LED::RGB_LED(int r, int g, int b)
+RGB_LED::RGB_LED(int red, int green, int blue)
 {
-  _red = r;
-  _green = g;
-  _blue = b;
+  _red = red;
+  _green = green;
+  _blue = blue;
 }
  
 RGB_LED::~RGB_LED()
@@ -58,28 +56,20 @@ RGB_LED::~RGB_LED()
   
 }
  
-void RGB_LED::draw()
+void RGB_LED::drawColor()
 {
   analogWrite(COLOR_R_PIN, 255-_red); 
   analogWrite(COLOR_G_PIN, 255-_green);
   analogWrite(COLOR_B_PIN, 255-_blue);  
- 
-  lcdPrint();
 }
  
-void RGB_LED::setDraw(int r, int g, int b)
+void RGB_LED::setColor(int r, int g, int b)
 {
   red = r;
   green = g;
   blue = b;
  
-  draw();
-}
- 
-void RGB_LED::lcdPrint()
-{
-  memset(line, 0x00, 33);
-  sprintf(line, "R%d G%d B%d", red, green, blue);
+  drawColor();
 }
  
 // create Object 
@@ -175,7 +165,7 @@ void loop() {
     int b = sBlue.toInt();
  
     //writing RGB LED
-   rgb->setDraw(r, g, b);
+   rgb->setColor(r, g, b);
 
     //clears variable
     readString=""; 
