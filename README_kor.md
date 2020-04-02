@@ -1,6 +1,8 @@
 # 아두이노 스마트 무드등
 > 아두이노를 이용한 블루투스 원격 제어 무드등 프로젝트 입니다.
 
+[ENGLISH VERSION](https://github.com/jihoonkimtech/smart-moodLight/blob/master/README.md)
+
 <!-- NPM Version -->
 <!-- Build Status -->
 [![NPM Version][npm-image]][npm-url]    [![Build Status][travis-image]][travis-url]

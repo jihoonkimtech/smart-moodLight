@@ -1,6 +1,8 @@
 # Arduino Smart Mood-Light
 > this project is Bluetooth control MoodLight made of Arduino.
 
+[KOREAN VERSION](https://github.com/jihoonkimtech/smart-moodLight/blob/master/README_kor.md)
+
 <!-- NPM Version -->
 <!-- Build Status -->
 [![NPM Version][npm-image]][npm-url]    [![Build Status][travis-image]][travis-url]
