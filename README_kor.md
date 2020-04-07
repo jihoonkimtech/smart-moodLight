@@ -15,19 +15,19 @@ MIT 라이센스를 준수합니다. ( 더 자세한 정보는 ``LICENSE``를 �
 ## 설정
 
 #### 핀 설정
-- Bluetooth Pins Set-up
+- 블루투스 핀 셋팅
 ```C++
     #define BT_TX 6 //블루투스 모듈의 TX 핀
     #define BT_RX 7 //블루투스 모듈의 RX 핀
 ```
-- RGB LED Pins Set-up
+- RGB LED 핀 셋팅
 ```C++
     #define COLOR_R_PIN 9  //RGB LED의 RED 핀
     #define COLOR_G_PIN 10 //RGB LED의 GREEN 핀
     #define COLOR_B_PIN 11 //RGB LED의 BLUE 핀
 ```
 #### 통신 속도 설정 
-- Serial Communication Baudrate Set-up
+- 직렬 통신 보 레이트 설정
 ```C++
     Serial.begin(9600);         //아두이노 직렬 통신의 보 레이트
     myBluetooth.begin(9600);    //블루투스 모듈의 보 레이트
